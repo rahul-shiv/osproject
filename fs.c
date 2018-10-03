@@ -47,6 +47,7 @@ int fs_format()
 void fs_debug()
 {
 //fdkslna.knasl
+//dakhadsfuhdafk
 	union fs_block block,iblock;
 	int i,j,k,,l,ninodeb;
 	disk_read(0,block.data);
