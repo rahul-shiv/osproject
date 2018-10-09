@@ -28,7 +28,7 @@ int main( int argc, char *argv[] )
 		return 1;
 	}
 
-	printf("opened emulated disk image %s with %d blocks\n",argv[1],disk_size());
+	printf("opened emulated disk image %d with %d blocks\n",atoi(argv[1]),disk_size());
 
 	while(1) {
 		printf(" simplefs> ");
@@ -44,7 +44,7 @@ int main( int argc, char *argv[] )
 
 		if(!strcmp(cmd,"format")) {
 			if(args==1) {
-				if(fs_format()) {
+				if(fs_format(atoi(argv[1]))) {
 					printf("disk formatted.\n");
 				} else {
 					printf("format failed!\n");

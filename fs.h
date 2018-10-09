@@ -2,7 +2,7 @@
 #define FS_H
 
 void fs_debug();
-int  fs_format();
+int  fs_format(int n);
 int  fs_mount();
 
 int  fs_create();

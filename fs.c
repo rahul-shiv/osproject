@@ -37,64 +37,21 @@ union fs_block {
 
 
 
-int fs_format()
+int fs_format(int n)
 {
-	
-	
+    union fs_block block;
+    block.super.magic = FS_MAGIC;
+    printf("\nn=%d\n",n);
+    block.super.nblocks = n;
+    block.super.ninodeblocks = n/10;
+    block.super.ninodes = block.super.ninodeblocks*128;
+    disk_write(0,block.data);
+    for (int i = 1; i < n; i++){
+        disk_write(i,"");
+    }
+	return 1;
 	return 0;
 }
-/*
-void fs_debug()
-{
-//fdkslna.knasl
-//dakhadsfuhdafk
-	union fs_block block,iblock;
-	int i,j,k,,l,ninodeb;
-	disk_read(0,block.data);
-	ninodeb=block.super.ninodeblocks;
-
-
-	printf("superblock:\n");
-	printf("    %d blocks\n",block.super.nblocks);
-	printf("    %d inode blocks\n",block.super.ninodeblocks);
-	printf("    %d inodes\n",block.super.ninodes);
-
-
-	for(k=0;k<ninodeb;k++)
-	{
-		disk_read(k,block.data);
-		for(i=1;i<INODES_PER_BLOCK;i++)
-		{
-			//disk_read(i,block.data);
-			if(block.inode[i].isvalid == 0)
-			{
-				printf("inode %d\n",i );
-				printf(" size : %d\n",block.inode[i].size);
-				printf("direct block" );
-				for( j = 0 ; j < POINTERS_PER_INODE ; j++ )
-				{
-					printf("%d ",block.inode[i].direct[j]);
-				}
-				printf("\n");
-
-				printf("indirect block %d\n",block.inode[i].indirect);
-				disk_read(block.inode[i].indirect,iblock.data);
-				printf("indirect data blocks: ")
-				for(l=0;l<POINTERS_PER_BLOCK;l++)
-				{
-					printf("%d ",iblock.pointers[l])
-				}
-			}
-		}
-	}
-
-*/
-
-
-
-
-
-
 
 
 
