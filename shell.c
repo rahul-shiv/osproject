@@ -46,7 +46,7 @@ int main( int argc, char *argv[] )
 
 		if(!strcmp(cmd,"format")) {
 			if(args==1) {
-				if(fs_format(atoi(argv[2])),mount) {
+				if(fs_format(atoi(argv[2]),mount)) {
 					printf("disk formatted.\n");
 				} else {
 					printf("format failed!\n");
@@ -56,7 +56,7 @@ int main( int argc, char *argv[] )
 			}
 		} else if(!strcmp(cmd,"mount")) {
 			if(args==1) {
-				if(fs_mount()) {
+				if(fs_mount(&mount)) {
 					printf("disk mounted.\n");
 				} else {
 					printf("mount failed!\n");

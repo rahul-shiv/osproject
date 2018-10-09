@@ -138,6 +138,46 @@ int fs_getsize( int inumber )
 
 int fs_read( int inumber, char *data, int length, int offset )
 {
+	struct fs_inode *inode ;
+	union fs_block block,iblock;
+	int direct_blockno,act_blockno,off,i,count_no_bytes=0;
+	inode_load( inumber,inode );
+	if(inode->isvalid != 1)
+		return 0;
+	else
+	{
+		//go to the correct offset
+		// considering only direct blocks
+		//max data in all direct blocks pointed by one inodenumber =20480
+		if((offset+length)<20480)
+		{
+			//calculate which block it is starts.
+			direct_blockno=offset/4096;
+			//find which data block it actually refers to
+			act_blockno=inode->direct[direct_blockno];
+			//read that particular data block
+			disk_read(act_blockno,block.data);
+			//calculate the remaining offset. i.e the offset in that particular data block 
+			off=offset%4096;
+			//read from offset to length
+			//considering length is less than 4096-offset
+
+			if(length<4096-off)
+			{
+				//start reading from that place till length
+				for(i=off;i<length;i++)
+				{
+					data[i]=block.data[i];
+					count_no_bytes=count_no_bytes+1;
+				}
+			}
+			//else we have to read the next data block also
+			//if no data blocks remaining return number of bytes copied till now
+		
+		}
+		
+	}
+
 	return 0;
 }
 
