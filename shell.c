@@ -10,6 +10,8 @@
 static int do_copyin( const char *filename, int inumber );
 static int do_copyout( int inumber, const char *filename );
 
+int mount = 0;
+
 int main( int argc, char *argv[] )
 {
 	char line[1024];
@@ -28,7 +30,7 @@ int main( int argc, char *argv[] )
 		return 1;
 	}
 
-	printf("opened emulated disk image %d with %d blocks\n",atoi(argv[1]),disk_size());
+	printf("opened emulated disk image %d with %d blocks\n",atoi(argv[2]),disk_size());
 
 	while(1) {
 		printf(" simplefs> ");
@@ -44,7 +46,7 @@ int main( int argc, char *argv[] )
 
 		if(!strcmp(cmd,"format")) {
 			if(args==1) {
-				if(fs_format(atoi(argv[1]))) {
+				if(fs_format(atoi(argv[2])),mount) {
 					printf("disk formatted.\n");
 				} else {
 					printf("format failed!\n");
@@ -64,7 +66,7 @@ int main( int argc, char *argv[] )
 			}
 		} else if(!strcmp(cmd,"debug")) {
 			if(args==1) {
-				fs_debug();
+				fs_debug(mount);
 			} else {
 				printf("use: debug\n");
 			}
@@ -146,7 +148,7 @@ int main( int argc, char *argv[] )
 			printf("    delete  <inode>\n");
 			printf("    cat     <inode>\n");
 			printf("    copyin  <file> <inode>\n");
-			printf("    copyout <inode> <file>\n");
+		printf("    copyout <inode> <file>\n");
 			printf("    help\n");
 			printf("    quit\n");
 			printf("    exit\n");

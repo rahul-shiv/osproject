@@ -37,19 +37,21 @@ union fs_block {
 
 
 
-int fs_format(int n)
+int fs_format(int n, int mount)
 {
-    union fs_block block;
-    block.super.magic = FS_MAGIC;
-    printf("\nn=%d\n",n);
-    block.super.nblocks = n;
-    block.super.ninodeblocks = n/10;
-    block.super.ninodes = block.super.ninodeblocks*128;
-    disk_write(0,block.data);
-    for (int i = 1; i < n; i++){
-        disk_write(i,"");
+    if (mount == 0){
+        union fs_block block;
+        block.super.magic = FS_MAGIC;
+        printf("\nn=%d\n",n);
+        block.super.nblocks = n;
+        block.super.ninodeblocks = (n + 10)/10;
+        block.super.ninodes = block.super.ninodeblocks*128;
+        disk_write(0,block.data);
+        for (int i = 1; i < n; i++){
+            disk_write(i,"");
+        }
+        return 1;
     }
-	return 1;
 	return 0;
 }
 
@@ -104,9 +106,19 @@ void fs_debug()
 
 }
 
-int fs_mount()
+int fs_mount(int *mount)
 {
-	return 0;
+    union fs_block block;
+    disk_read(0,block.data);
+    if (block.super.magic == FS_MAGIC){
+        printf("\nDisk mounted");
+        *(mount)++;
+        return 1;
+    }   
+    else{
+        printf("\nMount falied.");
+        return 0;
+    }
 }
 
 int fs_create()

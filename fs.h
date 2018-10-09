@@ -2,8 +2,8 @@
 #define FS_H
 
 void fs_debug();
-int  fs_format(int n);
-int  fs_mount();
+int  fs_format(int n, int mount);
+int  fs_mount(int *mount);
 
 int  fs_create();
 int  fs_delete( int inumber );
