@@ -136,6 +136,15 @@ int fs_getsize( int inumber )
 	return -1;
 }
 
+
+void inode_load( int inumber, struct fs_inode *inode ) {
+	union fs_block block;
+	int blockno=(((inumber-1)*32)/4096)+1;
+	disk_read(blockno,block.data);
+	int noinblock=((inumber-1)%128);
+	inode=block.inode[noinblock];
+}
+
 int fs_read( int inumber, char *data, int length, int offset )
 {
 	struct fs_inode *inode ;
